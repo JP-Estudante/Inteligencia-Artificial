@@ -28,7 +28,7 @@ def gerar_vizinho(estado):
 
 def temperatura_inicial():
     "Temperatura inicial"
-    return 100
+    return 2000
 
 def temperatura_final():
     "Temperatura Final"
@@ -36,13 +36,13 @@ def temperatura_final():
 
 def reduzir(temperatura):
     "Reduz a temperatura (fator de resfriamento)"
-    return temperatura * 0.95 # Reduz 5% cada vez
+    return temperatura * 0.99 # Reduz 1% cada vez
 
 def tempera_simulada():
     estado_atual = gerar_estado_inicial()
     temperatura = temperatura_inicial()
     
-    while temperatura > temperatura_final() or custo(estado_atual) == 0:
+    while temperatura > temperatura_final():
         vizinho = gerar_vizinho(estado_atual)
         custo_atual = custo(estado_atual)
         custo_vizinho = custo(vizinho)
@@ -63,8 +63,15 @@ def tempera_simulada():
         
     return estado_atual
 
-
 if __name__ == "__main__":
-    solucao = tempera_simulada()
-    print("Solução: ", solucao)
-    print("Conflitos: ", custo(solucao))
+    sucessos = 0
+    for _ in range(100):
+        sol = tempera_simulada()
+        if custo(sol) == 0:
+            sucessos += 1
+            print("Solução encontrada:", sol)
+    print(f"Soluções válidas: {sucessos}/100")
+    
+    # solucao = tempera_simulada()
+    # print("Solução: ", solucao)
+    # print("Conflitos: ", custo(solucao))
