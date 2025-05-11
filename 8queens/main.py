@@ -1,77 +1,22 @@
-import math
-import random
+from algoritmos.tempera_simulada import tempera_simulada
+from auxiliar.alg_utils import custo
+from auxiliar.metricas import medir_tempo_execucao
 
-def gerar_estado_inicial():
-    "Gera um estado inicial aleatório: uma rainha por coluna, em linha aleatória"
-    return [random.randint(0, 7) for _ in range(8)]
+@medir_tempo_execucao
+def executar_algoritmo():
+    return tempera_simulada()
 
-def custo(estado):
-    "Calcula o custo de um estado (número de pares de rainhas que se atacam)"
-    conflitos = 0
-    for i in range(len(estado)): # Percorre cada rainha
-        for j in range(i + 1, len(estado)): # Compara as rainhas seguintes
-            if estado[i] == estado[j] or abs(estado[i] - estado[j]) == abs(i - j): # Se estiverem na mesma linha, ou diagonal   
-                conflitos += 1
-    return conflitos
+sucessos = 0
 
-def gerar_vizinho(estado):
-    "Gera um vizinho alterando a linha de uma rainha (coluna aleatória)"
-    novo_estado = estado[:] # Criando cópia para não afetar a original
-    col = random.randint(0, 7) # Escolher coluna aleatória
-    nova_linha = random.randint(0, 7) # Escolher linha aleatória
-    
-    while nova_linha == novo_estado[col]:  # `novo_estado[col]` linha atual da rainha nessa coluna
-        nova_linha = random.randint(0, 7)  # Gera outra linha
-    novo_estado[col] = nova_linha # Atribui a nova posição da rainha gerada
-    
-    return novo_estado # Modificado
+for _ in range(10):
+    (solucao, iteracoes, melhor_qualidade), tempo = executar_algoritmo()
+    if custo(solucao) == 0:
+        sucessos += 1
+        print("Solução encontrada:", solucao)
+        print(f"→ Tempo de execução: {tempo:.4f} segundos")
+        print(f"→ Iterações até encontrar solução: {iteracoes}")
+        print(f"→ Qualidade da melhor solução antes do final: {melhor_qualidade}")
+    else:
+        print("Nenhuma solução válida.")
 
-def temperatura_inicial():
-    "Temperatura inicial"
-    return 2000
-
-def temperatura_final():
-    "Temperatura Final"
-    return 0.1
-
-def reduzir(temperatura):
-    "Reduz a temperatura (fator de resfriamento)"
-    return temperatura * 0.99 # Reduz 1% cada vez
-
-def tempera_simulada():
-    estado_atual = gerar_estado_inicial()
-    temperatura = temperatura_inicial()
-    
-    while temperatura > temperatura_final():
-        vizinho = gerar_vizinho(estado_atual)
-        custo_atual = custo(estado_atual)
-        custo_vizinho = custo(vizinho)
-        delta_e = custo_vizinho - custo_atual
-        
-        if delta_e < 0: # Melhor solução, aceita
-            estado_atual = vizinho
-        else: # Pior solução, aceita com probabilidade
-            probabilidade = math.exp(-delta_e / temperatura)
-            r = random.random()
-            if r < probabilidade:
-                estado_atual = vizinho
-        
-        temperatura = reduzir(temperatura)
-        
-        if custo(estado_atual) == 0:
-            break
-        
-    return estado_atual
-
-if __name__ == "__main__":
-    sucessos = 0
-    for _ in range(100):
-        sol = tempera_simulada()
-        if custo(sol) == 0:
-            sucessos += 1
-            print("Solução encontrada:", sol)
-    print(f"Soluções válidas: {sucessos}/100")
-    
-    # solucao = tempera_simulada()
-    # print("Solução: ", solucao)
-    # print("Conflitos: ", custo(solucao))
+print(f"Soluções válidas: {sucessos}/10")
