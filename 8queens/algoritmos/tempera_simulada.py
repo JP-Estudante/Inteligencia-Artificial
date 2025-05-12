@@ -1,7 +1,7 @@
 import math
 import random
 from auxiliar.alg_utils import gerar_estado_inicial, custo, gerar_vizinho
-from auxiliar.metricas import medir_tempo_execucao, qualidade
+from auxiliar.metricas import qualidade
 
 def temperatura_inicial():
     "Temperatura inicial"
