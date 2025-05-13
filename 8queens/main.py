@@ -1,6 +1,7 @@
 import time
 from algoritmos.tempera_simulada import tempera_simulada
 from algoritmos.subida_da_encosta import subida_da_encosta_com_reinicio
+from algoritmos.algoritmo_genetico import algoritmo_genetico
 from auxiliar.alg_utils import custo
 from auxiliar.metricas import medir_tempo_execucao
 
@@ -8,7 +9,7 @@ from auxiliar.metricas import medir_tempo_execucao
 algoritmos = [
     ("Tempera Simulada", tempera_simulada),
     ("Subida da Encosta", subida_da_encosta_com_reinicio),
-    # Futuramente: ("Alg. Genético", algoritmo_genetico),
+    ("Alg. Genético", algoritmo_genetico),
 ]
 
 # Resultados de múltiplas execuções
