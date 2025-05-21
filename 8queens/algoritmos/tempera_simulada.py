@@ -5,7 +5,7 @@ from auxiliar.metricas import qualidade
 
 def temperatura_inicial():
     "Temperatura inicial"
-    return 2000
+    return 200
 
 def temperatura_final():
     "Temperatura Final"
@@ -13,7 +13,7 @@ def temperatura_final():
 
 def reduzir(temperatura): 
     "Reduz a temperatura (fator de resfriamento)"
-    return temperatura * 0.99 # Reduz 1% cada vez
+    return temperatura * 0.999 # Reduz % cada vez
 
 def tempera_simulada():
     estado_atual = gerar_estado_inicial()

@@ -16,9 +16,11 @@ def gerar_todos_vizinhos(estado):
 def subida_da_encosta_com_reinicio():
     melhor_qualidade = 0
     iteracoes = 0
+    reinicios = 0
 
     while True:
-        estado_atual = gerar_estado_inicial()
+        estado_atual = gerar_estado_inicial()      
+        
         while True:
             iteracoes += 1
             custo_atual = custo(estado_atual)
@@ -34,7 +36,8 @@ def subida_da_encosta_com_reinicio():
             if custo_melhor < custo_atual:
                 estado_atual = melhor_vizinho # Avança para o vizinho de menor custo, atualizando o estado atual.
             else:
+                reinicios += 1
                 break  # ótimo local → reinício aleatório.
 
         if custo(estado_atual) == 0: # Se o custo é zero, significa "solução encontrada".
-            return estado_atual, iteracoes, melhor_qualidade
+            return estado_atual, iteracoes, melhor_qualidade, reinicios
