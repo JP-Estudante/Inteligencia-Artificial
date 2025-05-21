@@ -2,7 +2,7 @@ import time
 import os
 from algoritmos.tempera_simulada import tempera_simulada
 from algoritmos.subida_da_encosta import subida_da_encosta_com_reinicio
-from algoritmos.algoritmo_genetico import algoritmo_genetico
+from algoritmos.algoritmo_genetico import algoritmo_genetico, configurar_parametros
 from auxiliar.alg_utils import custo
 from auxiliar.metricas import (
     medir_tempo_execucao,
@@ -27,6 +27,8 @@ def selecionar_algoritmo():
         try:
             escolha = int(input("Digite o número correspondente ao algoritmo: "))
             if 1 <= escolha <= len(algoritmos):
+                if escolha == 3:
+                    configurar_parametros()
                 nome_algoritmo = list(algoritmos.keys())[escolha - 1]
                 return nome_algoritmo, algoritmos[nome_algoritmo]
             else:
@@ -104,6 +106,6 @@ def imprimir_resultado_unitario(nome, iteracoes, qualidade, tempo, valida, reini
     print(fundo)
 
 if __name__ == "__main__":
-    nome, func = selecionar_algoritmo()
     vezes = definir_num_execucoes()
+    nome, func = selecionar_algoritmo()
     executar_varias_vezes(nome, func, vezes)
