@@ -88,23 +88,6 @@ def executar_varias_vezes(nome, func, vezes=10):
     saida_resultados.extend(resumo)
     salvar_resultado_em_arquivo(saida_resultados)
 
-def imprimir_resultado_unitario(nome, iteracoes, qualidade, tempo, valida, reinicios=None):
-    largura = 24
-    topo = "╔" + "═" * largura + "╗"
-    meio = "╟" + "─" * largura + "╢"
-    fundo = "╚" + "═" * largura + "╝"
-
-    print(topo)
-    print(f"║ {nome:<{largura - 2}} ║")
-    print(meio)
-    if reinicios is not None:
-        print(f"║ Reinícios: {reinicios:<{largura - 13}} ║")
-    print(f"║ Iterações: {iteracoes:<{largura - 13}} ║")
-    print(f"║ Qualidade: {qualidade:<{largura - 13}} ║")
-    print(f"║ Tempo: {tempo:.4f}s".ljust(largura + 1) + "║")
-    print(f"║ Status: {'✓' if valida else '✗'}".ljust(largura + 1) + "║")
-    print(fundo)
-
 if __name__ == "__main__":
     vezes = definir_num_execucoes()
     nome, func = selecionar_algoritmo()
