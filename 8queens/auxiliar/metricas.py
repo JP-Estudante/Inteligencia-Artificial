@@ -25,6 +25,9 @@ def qualidade(estado):
 def calcular_media_tempos(lista_tempos):
     return sum(lista_tempos) / len(lista_tempos) if lista_tempos else 0
 
+def calcular_media_iteracoes(lista_iteracoes):
+    return sum(lista_iteracoes) / len(lista_iteracoes) if lista_iteracoes else 0
+
 def formatar_resultado_unitario(i, reinicios, iteracoes, qualidade, tempo, valida, vezes):
     resultado = [
         f"\nExecução {i + 1}/{vezes}\n",

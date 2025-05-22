@@ -1,5 +1,3 @@
-import time
-import os
 from algoritmos.tempera_simulada import tempera_simulada
 from algoritmos.subida_da_encosta import subida_da_encosta_com_reinicio
 from algoritmos.algoritmo_genetico import algoritmo_genetico, configurar_parametros
@@ -7,6 +5,7 @@ from auxiliar.alg_utils import custo
 from auxiliar.metricas import (
     medir_tempo_execucao,
     calcular_media_tempos,
+    calcular_media_iteracoes,
     formatar_resultado_unitario,
     salvar_resultado_em_arquivo
 )
@@ -50,6 +49,7 @@ def definir_num_execucoes():
 def executar_varias_vezes(nome, func, vezes=10):
     sucesso = 0
     tempos_execucao = []
+    iteracoes_execucao = []
     saida_resultados = []
 
     for i in range(vezes):
@@ -65,7 +65,8 @@ def executar_varias_vezes(nome, func, vezes=10):
         else:
             solucao, iteracoes, melhor_qualidade = resultado_bruto
             reinicios = None
-
+            
+        iteracoes_execucao.append(iteracoes)
         valida = custo(solucao) == 0
         if valida:
             sucesso += 1
@@ -78,10 +79,13 @@ def executar_varias_vezes(nome, func, vezes=10):
         saida_resultados.append(resultado_formatado)
 
     media_tempo = calcular_media_tempos(tempos_execucao)
+    media_iteracoes = calcular_media_iteracoes(iteracoes_execucao)
+    
     resumo = [
         "\nResumo de Sucessos:",
         f"- {nome}: {sucesso}/{vezes} ✓",
         f"- Tempo médio: {media_tempo:.4f} segundos"
+        f"\n- Iterações médias: {media_iteracoes:.2f}",
     ]
 
     print("\n".join(resumo))
