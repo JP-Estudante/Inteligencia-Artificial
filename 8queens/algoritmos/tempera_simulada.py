@@ -5,7 +5,7 @@ from auxiliar.metricas import qualidade
 
 def temperatura_inicial():
     "Temperatura inicial"
-    return 200
+    return 1000
 
 def temperatura_final():
     "Temperatura Final"

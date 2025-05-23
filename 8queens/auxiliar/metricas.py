@@ -28,6 +28,9 @@ def calcular_media_tempos(lista_tempos):
 def calcular_media_iteracoes(lista_iteracoes):
     return sum(lista_iteracoes) / len(lista_iteracoes) if lista_iteracoes else 0
 
+def calcular_media_reinicios(lista_reinicios):
+    return sum(lista_reinicios) / len(lista_reinicios) if lista_reinicios else 0
+
 def formatar_resultado_unitario(i, reinicios, iteracoes, qualidade, tempo, valida, vezes):
     resultado = [
         f"\nExecução {i + 1}/{vezes}\n",

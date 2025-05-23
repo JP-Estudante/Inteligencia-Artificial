@@ -6,6 +6,7 @@ from auxiliar.metricas import (
     medir_tempo_execucao,
     calcular_media_tempos,
     calcular_media_iteracoes,
+    calcular_media_reinicios,
     formatar_resultado_unitario,
     salvar_resultado_em_arquivo
 )
@@ -50,8 +51,9 @@ def executar_varias_vezes(nome, func, vezes=10):
     sucesso = 0
     tempos_execucao = []
     iteracoes_execucao = []
+    reinicios_execucao = []
     saida_resultados = []
-
+    
     for i in range(vezes):
         @medir_tempo_execucao
         def executar():
@@ -62,6 +64,7 @@ def executar_varias_vezes(nome, func, vezes=10):
 
         if nome == "Subida da Encosta":
             solucao, iteracoes, melhor_qualidade, reinicios = resultado_bruto
+            reinicios_execucao.append(reinicios)
         else:
             solucao, iteracoes, melhor_qualidade = resultado_bruto
             reinicios = None
@@ -80,12 +83,14 @@ def executar_varias_vezes(nome, func, vezes=10):
 
     media_tempo = calcular_media_tempos(tempos_execucao)
     media_iteracoes = calcular_media_iteracoes(iteracoes_execucao)
+    media_reinicios = calcular_media_reinicios(reinicios_execucao)
     
     resumo = [
         "\nResumo de Sucessos:",
         f"- {nome}: {sucesso}/{vezes} ✓",
-        f"- Tempo médio: {media_tempo:.4f} segundos"
-        f"\n- Iterações médias: {media_iteracoes:.2f}",
+        f"- Tempo médio: {media_tempo:.4f} segundos",
+        f"- Iterações médias: {media_iteracoes:.2f}",
+        f"- Reinícios médias: {media_reinicios:.2f}" if media_reinicios else "",
     ]
 
     print("\n".join(resumo))
