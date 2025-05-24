@@ -1,6 +1,8 @@
 from auxiliar.alg_utils import gerar_estado_inicial, custo
 from auxiliar.metricas import qualidade
 
+MAX_REINICIOS = 15
+
 def gerar_todos_vizinhos(estado):
     "Gera todos os 56 vizinhos possíveis de um estado"
     vizinhos = []
@@ -39,5 +41,5 @@ def subida_da_encosta_com_reinicio():
                 reinicios += 1
                 break  # ótimo local → reinício aleatório.
 
-        if custo(estado_atual) == 0: # Se o custo é zero, significa "solução encontrada".
+        if custo(estado_atual) == 0  or reinicios >= MAX_REINICIOS: # Se o custo é zero, significa "solução encontrada".
             return estado_atual, iteracoes, melhor_qualidade, reinicios
