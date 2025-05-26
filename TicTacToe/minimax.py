@@ -5,25 +5,25 @@ def inicializar_tabuleiro():
 
 def verificar_vencedor(tabuleiro):
     for linha in tabuleiro:
-        if linha[0] == linha[1] == linha[2] != ' ':
+        if linha[0] == linha[1] == linha[2] != ' ': # Verifica na horizontal
             return linha[0]
     for col in range(3):
-        if tabuleiro[0][col] == tabuleiro[1][col] == tabuleiro[2][col] != ' ':
+        if tabuleiro[0][col] == tabuleiro[1][col] == tabuleiro[2][col] != ' ': # Verifica na vertical
             return tabuleiro[0][col]
-    if tabuleiro[0][0] == tabuleiro[1][1] == tabuleiro[2][2] != ' ':
+    if tabuleiro[0][0] == tabuleiro[1][1] == tabuleiro[2][2] != ' ': # Verifica na diagonal
         return tabuleiro[0][0]
-    if tabuleiro[0][2] == tabuleiro[1][1] == tabuleiro[2][0] != ' ':
+    if tabuleiro[0][2] == tabuleiro[1][1] == tabuleiro[2][0] != ' ': # Verifica na diagonal
         return tabuleiro[0][2]
     return None
 
 def verificar_empate(tabuleiro):
     for linha in tabuleiro:
         if ' ' in linha:
-            return False
-    return verificar_vencedor(tabuleiro) is None
+            return False # Não tem como ser empate, se não estiver tudo preenchido
+    return verificar_vencedor(tabuleiro) is None # Se `verificar_vencedor` retornar None, empate == true
 
 def movimentos_possiveis(tabuleiro):
-    return [(i, j) for i in range(3) for j in range(3) if tabuleiro[i][j] == ' ']
+    return [(i, j) for i in range(3) for j in range(3) if tabuleiro[i][j] == ' '] # Retorna `i` e `j` aonde for == ' '
 
 def minimax(tabuleiro, profundidade, alfa, beta, maximizando):
     vencedor = verificar_vencedor(tabuleiro)
@@ -35,25 +35,25 @@ def minimax(tabuleiro, profundidade, alfa, beta, maximizando):
         return 0
 
     if maximizando:
-        max_avaliacao = float('-inf')
+        max_avaliacao = float('-inf') # Inicializa de modo que qualquer coisa é melhor
         for i, j in movimentos_possiveis(tabuleiro):
-            tabuleiro[i][j] = 'X'
-            avaliacao = minimax(tabuleiro, profundidade + 1, alfa, beta, False)
-            tabuleiro[i][j] = ' '
-            max_avaliacao = max(max_avaliacao, avaliacao)
-            alfa = max(alfa, avaliacao)
-            if beta <= alfa:
+            tabuleiro[i][j] = 'X' # Simulação de uma jogada
+            avaliacao = minimax(tabuleiro, profundidade + 1, alfa, beta, False) # Recursiva para a próxima jogada
+            tabuleiro[i][j] = ' ' # Limpa para simular uma próxima
+            max_avaliacao = max(max_avaliacao, avaliacao) # O melhor valor que o MAX encontrou nessa chamada (Local)
+            alfa = max(alfa, avaliacao) # O melhor valor que o MAX encontrou em todas as jogadas (Global)
+            if beta <= alfa: # Se for `True` vai ocorrer a poda
                 break
         return max_avaliacao
     else:
         min_avaliacao = float('inf')
         for i, j in movimentos_possiveis(tabuleiro):
-            tabuleiro[i][j] = 'O'
+            tabuleiro[i][j] = 'O' # Simula uma jogada
             avaliacao = minimax(tabuleiro, profundidade + 1, alfa, beta, True)
-            tabuleiro[i][j] = ' '
-            min_avaliacao = min(min_avaliacao, avaliacao)
-            beta = min(beta, avaliacao)
-            if beta <= alfa:
+            tabuleiro[i][j] = ' ' # Limpa 
+            min_avaliacao = min(min_avaliacao, avaliacao) # Melhor valor local do MIN
+            beta = min(beta, avaliacao) # Melhor valor global do MIN
+            if beta <= alfa: # Poda
                 break
         return min_avaliacao
 

@@ -1,5 +1,3 @@
-# interface.py
-
 import tkinter as tk
 from minimax import inicializar_tabuleiro, verificar_vencedor, verificar_empate, melhor_jogada
 
