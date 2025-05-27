@@ -1,8 +1,8 @@
 import tkinter as tk
-from minimax import inicializar_tabuleiro, verificar_vencedor, verificar_empate, melhor_jogada
+from minimax import inicializar_tabuleiro, verificar_vencedor, verificar_empate, melhor_jogada, estimar_chances
 
-CEL_SIZE = 100
-LINE_WIDTH = 4
+CEL_SIZE = 100 # Tamanho do tabuleiro
+LINE_WIDTH = 4 # Espessura da linha
 
 placar = {'IA': 0, 'Humano': 0}  # Acumulativo
 
@@ -55,6 +55,11 @@ def jogar_gui():
 
     def atualizar():
         desenhar_XO(canvas, tabuleiro)
+        
+        # Estimar e mostrar chances
+        v, e, d = estimar_chances(tabuleiro)
+        label_chances.config(text=f"Vitoria: {v}%  |  Empate: {e}%  |  Derrota: {d}%")
+        
         vencedor = verificar_vencedor(tabuleiro)
         if vencedor:
             if vencedor == 'X':
@@ -76,9 +81,9 @@ def jogar_gui():
             status.config(text=f"Jogada de {proxima}")
 
     def jogada_ia():
-        nonlocal vez_ia
+        nonlocal vez_ia # Função pai
         i, j = melhor_jogada(tabuleiro)
-        if i is not None:
+        if i is not None: # Se ocorrer um erro em melhor
             tabuleiro[i][j] = 'X'
         atualizar()
         vez_ia = False
@@ -108,6 +113,7 @@ def jogar_gui():
         desenhar_XO(canvas, tabuleiro)
         canvas.bind("<Button-1>", clique)
         status.config(text="Jogada de X (IA)")
+        label_chances.config(text="")  # Zera a porcentagem
         canvas.after(300, jogada_ia)
 
     def atualizar_placar():
@@ -127,6 +133,9 @@ def jogar_gui():
 
     status = tk.Label(root, text="Jogada de X (IA)", font=('Arial', 14))
     status.pack(pady=5)
+
+    label_chances = tk.Label(root, text="", font=('Arial', 12))
+    label_chances.pack(pady=5)
 
     botao_reiniciar = tk.Button(root, text="Reiniciar Partida", font=('Arial', 12), command=reiniciar)
     botao_reiniciar.pack(pady=5)

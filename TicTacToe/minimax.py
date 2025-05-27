@@ -3,6 +3,10 @@ import random
 def inicializar_tabuleiro():
     return [[' ' for _ in range(3)] for _ in range(3)]
 
+# {[' '], [' '], [' '],
+#  [' '], [' '], [' '],
+#  [' '], [' '], [' ']}
+
 def verificar_vencedor(tabuleiro):
     for linha in tabuleiro:
         if linha[0] == linha[1] == linha[2] != ' ': # Verifica na horizontal
@@ -72,3 +76,25 @@ def melhor_jogada(tabuleiro):
             melhor_valor = valor
             melhor_movimento = (i, j)
     return melhor_movimento
+
+def estimar_chances(tabuleiro):
+    vitorias = empates = derrotas = 0
+    for i, j in movimentos_possiveis(tabuleiro):
+        tabuleiro[i][j] = 'X'
+        resultado = minimax(tabuleiro, 0, float('-inf'), float('inf'), False)
+        tabuleiro[i][j] = ' '
+        if resultado == 1:
+            vitorias += 1
+        elif resultado == 0:
+            empates += 1
+        elif resultado == -1:
+            derrotas += 1
+
+    total = vitorias + empates + derrotas
+    if total == 0:
+        return 0, 0, 0
+    return (
+        round((vitorias / total) * 100),
+        round((empates / total) * 100),
+        round((derrotas / total) * 100)
+    )
